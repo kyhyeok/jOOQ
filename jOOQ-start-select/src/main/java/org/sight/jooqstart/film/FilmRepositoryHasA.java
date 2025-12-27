@@ -5,6 +5,7 @@ import org.jooq.DSLContext;
 import org.jooq.generated.tables.*;
 import org.jooq.generated.tables.daos.FilmDao;
 import org.jooq.generated.tables.pojos.Film;
+import org.sight.jooqstart.config.PriceCategoryConverter;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -73,7 +74,7 @@ public class FilmRepositoryHasA {
                         case_()
                                 .when(FILM.RENTAL_RATE.le(BigDecimal.valueOf(1.0)), "Cheep")
                                 .when(FILM.RENTAL_RATE.le(BigDecimal.valueOf(3.0)), "Moderate")
-                                .else_("Expensive").as("price_category"),
+                                .else_("Expensive").as("price_category").convert(new PriceCategoryConverter()),
                         selectCount().from(INVENTORY).where(INVENTORY.FILM_ID.eq(FILM.FILM_ID)).asField("total_invertory")
                 ).from(FILM)
                 .where(FILM.TITLE.like("%" + filmTitle + "%"))

@@ -53,5 +53,4 @@ public class FilmRepository {
                 .offset((page - 1) * pageSize)
                 .fetchInto(FilmWithActors.class);
     }
-
 }

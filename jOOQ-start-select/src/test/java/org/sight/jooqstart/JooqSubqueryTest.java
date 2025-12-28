@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 @SpringBootTest
 public class JooqSubqueryTest {
 
@@ -51,5 +53,24 @@ public class JooqSubqueryTest {
         List<Film> filmList = filmRepository.findRentedFilmByTitle(filmTitle);
         Assertions.assertThat(filmList).isNotEmpty();
 
+    }
+
+    @Test
+    void Enum_Converter_테스트() {
+        // when
+        List<FilmPriceSummary> result = filmRepository
+                .findFilmPriceSummaryByFilmTitle("EGG");
+
+        // then
+        assertThat(result).allSatisfy(summary -> {
+            assertThat(summary.getPriceCategory())
+                    .isInstanceOf(FilmPriceSummary.PriceCategory.class);
+            assertThat(summary.getPriceCategory())
+                    .isIn(
+                            FilmPriceSummary.PriceCategory.CHEAP,
+                            FilmPriceSummary.PriceCategory.MODERATE,
+                            FilmPriceSummary.PriceCategory.EXPENSIVE
+                    );
+        });
     }
 }

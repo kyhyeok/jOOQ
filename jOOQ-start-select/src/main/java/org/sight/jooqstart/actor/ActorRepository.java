@@ -26,6 +26,7 @@ public class ActorRepository {
     private final JActor ACTOR = JActor.ACTOR;
 
     public ActorRepository(DSLContext dslContext, Configuration configuration) {
+//        this.dslContext = new ActorDao(dslContext.configuration());
         this.dslContext = dslContext;
         this.actorDao = new ActorDao(configuration);
     }
@@ -183,5 +184,10 @@ public class ActorRepository {
     public int deleteWithRecord(Long newActorId) {
         ActorRecord record = dslContext.fetchOne(ACTOR, ACTOR.ACTOR_ID.eq(newActorId));
         return record.delete();
+    }
+
+    public ActorRecord findRecordByActorId(Long actorId) {
+//        ActorRecord actorRecord = new ActorRecord();
+        return dslContext.fetchOne(ACTOR, ACTOR.ACTOR_ID.eq(actorId));
     }
 }
